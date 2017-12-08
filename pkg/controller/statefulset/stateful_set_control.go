@@ -317,7 +317,9 @@ func (ssc *defaultStatefulSetControl) updateStatefulSet(
 
 	// for any empty indices in the sequence [0,set.Spec.Replicas) create a new Pod at the correct revision
 	for ord := 0; ord < replicaCount; ord++ {
+		glog.V(4).Infof("DanielDebug 111")
 		if replicas[ord] == nil {
+			glog.V(4).Infof("DanielDebug 222")
 			replicas[ord] = newVersionedStatefulSetPod(
 				currentSet,
 				updateSet,

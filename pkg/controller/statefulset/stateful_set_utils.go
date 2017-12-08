@@ -32,6 +32,7 @@ import (
 	podutil "k8s.io/kubernetes/pkg/api/v1/pod"
 	"k8s.io/kubernetes/pkg/controller"
 	"k8s.io/kubernetes/pkg/controller/history"
+	"github.com/golang/glog"
 )
 
 // maxUpdateRetries is the maximum number of retries used for update conflict resolution prior to failure
@@ -263,10 +264,12 @@ func newVersionedStatefulSetPod(currentSet, updateSet *apps.StatefulSet, current
 	if currentSet.Spec.UpdateStrategy.Type == apps.RollingUpdateStatefulSetStrategyType &&
 		(currentSet.Spec.UpdateStrategy.RollingUpdate == nil && ordinal < int(currentSet.Status.CurrentReplicas)) ||
 		(currentSet.Spec.UpdateStrategy.RollingUpdate != nil && ordinal < int(*currentSet.Spec.UpdateStrategy.RollingUpdate.Partition)) {
+		glog.V(4).Infof("DanielDebug 333")
 		pod := newStatefulSetPod(currentSet, ordinal)
 		setPodRevision(pod, currentRevision)
 		return pod
 	}
+	glog.V(4).Infof("DanielDebug 444")
 	pod := newStatefulSetPod(updateSet, ordinal)
 	setPodRevision(pod, updateRevision)
 	return pod
