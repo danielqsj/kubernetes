@@ -283,6 +283,7 @@ func (ssc *defaultStatefulSetControl) updateStatefulSet(
 	var firstUnhealthyPod *v1.Pod
 
 	// First we partition pods into two lists valid replicas and condemned Pods
+	glog.V(4).Infof("DanielDebug 00")
 	for i := range pods {
 		status.Replicas++
 
@@ -304,10 +305,12 @@ func (ssc *defaultStatefulSetControl) updateStatefulSet(
 			// if the ordinal of the pod is within the range of the current number of replicas,
 			// insert it at the indirection of its ordinal
 			replicas[ord] = pods[i]
+			glog.V(4).Infof("DanielDebug 11")
 
 		} else if ord >= replicaCount {
 			// if the ordinal is greater than the number of replicas add it to the condemned list
 			condemned = append(condemned, pods[i])
+			glog.V(4).Infof("DanielDebug 22")
 		}
 		// If the ordinal could not be parsed (ord < 0), ignore the Pod.
 	}
@@ -330,6 +333,7 @@ func (ssc *defaultStatefulSetControl) updateStatefulSet(
 	for i := range replicas {
 		if !isHealthy(replicas[i]) {
 			unhealthy++
+			glog.V(4).Infof("DanielDebug 33")
 			if ord := getOrdinal(replicas[i]); ord < firstUnhealthyOrdinal {
 				firstUnhealthyOrdinal = ord
 				firstUnhealthyPod = replicas[i]
@@ -340,6 +344,7 @@ func (ssc *defaultStatefulSetControl) updateStatefulSet(
 	for i := range condemned {
 		if !isHealthy(condemned[i]) {
 			unhealthy++
+			glog.V(4).Infof("DanielDebug 44")
 			if ord := getOrdinal(condemned[i]); ord < firstUnhealthyOrdinal {
 				firstUnhealthyOrdinal = ord
 				firstUnhealthyPod = condemned[i]
