@@ -200,6 +200,7 @@ func (ssc *StatefulSetController) addPod(obj interface{}) {
 func (ssc *StatefulSetController) updatePod(old, cur interface{}) {
 	curPod := cur.(*v1.Pod)
 	oldPod := old.(*v1.Pod)
+	glog.V(4).Infof("DanielDebug 0000: updatePod, curPod: %#v, oldPod: %#v", curPod, oldPod)
 	if curPod.ResourceVersion == oldPod.ResourceVersion {
 		// Periodic resync will send update events for all known pods.
 		// Two different versions of the same pod will always have different RVs.
