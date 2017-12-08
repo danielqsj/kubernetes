@@ -52,6 +52,7 @@ import (
 	"k8s.io/kubernetes/test/e2e/manifest"
 	testutils "k8s.io/kubernetes/test/utils"
 	utilexec "k8s.io/utils/exec"
+	"k8s.io/ingress-gce/pkg/annotations"
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
@@ -62,9 +63,7 @@ const (
 	validFor = 365 * 24 * time.Hour
 
 	// Ingress class annotation defined in ingress repository.
-	// TODO: All these annotations should be reused from
-	// ingress-gce/pkg/annotations instead of duplicating them here.
-	IngressClass = "kubernetes.io/ingress.class"
+	IngressClass = annotations.IngressClassKey
 
 	// Ingress class annotation value for multi cluster ingress.
 	MulticlusterIngressClassValue = "gce-multi-cluster"
