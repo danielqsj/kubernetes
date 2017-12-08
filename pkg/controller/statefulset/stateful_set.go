@@ -163,6 +163,7 @@ func (ssc *StatefulSetController) Run(workers int, stopCh <-chan struct{}) {
 
 // addPod adds the statefulset for the pod to the sync queue
 func (ssc *StatefulSetController) addPod(obj interface{}) {
+	glog.V(4).Infof("DanielDebug 0022: add pod")
 	pod := obj.(*v1.Pod)
 
 	if pod.DeletionTimestamp != nil {
@@ -253,6 +254,7 @@ func (ssc *StatefulSetController) updatePod(old, cur interface{}) {
 
 // deletePod enqueues the statefulset for the pod accounting for deletion tombstones.
 func (ssc *StatefulSetController) deletePod(obj interface{}) {
+	glog.V(4).Infof("DanielDebug 0011: delete pod")
 	pod, ok := obj.(*v1.Pod)
 
 	// When a delete is dropped, the relist will notice a pod in the store not
