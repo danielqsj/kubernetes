@@ -208,21 +208,28 @@ func (ssc *StatefulSetController) updatePod(old, cur interface{}) {
 	labelChanged := !reflect.DeepEqual(curPod.Labels, oldPod.Labels)
 
 	curControllerRef := metav1.GetControllerOf(curPod)
+	glog.V(4).Infof("DanielDebug 0000, curControllerRef: %v", curControllerRef)
 	oldControllerRef := metav1.GetControllerOf(oldPod)
+	glog.V(4).Infof("DanielDebug 1111, oldControllerRef: %v", oldControllerRef)
 	controllerRefChanged := !reflect.DeepEqual(curControllerRef, oldControllerRef)
+	glog.V(4).Infof("DanielDebug 2222, controllerRefChanged: %v", controllerRefChanged)
 	if controllerRefChanged && oldControllerRef != nil {
 		// The ControllerRef was changed. Sync the old controller, if any.
+		glog.V(4).Infof("DanielDebug 3333")
 		if set := ssc.resolveControllerRef(oldPod.Namespace, oldControllerRef); set != nil {
+			glog.V(4).Infof("DanielDebug 4444")
 			ssc.enqueueStatefulSet(set)
 		}
 	}
 
 	// If it has a ControllerRef, that's all that matters.
 	if curControllerRef != nil {
+		glog.V(4).Infof("DanielDebug 5555")
 		set := ssc.resolveControllerRef(curPod.Namespace, curControllerRef)
 		if set == nil {
 			return
 		}
+		glog.V(4).Infof("DanielDebug 6666")
 		glog.V(4).Infof("Pod %s updated, objectMeta %+v -> %+v.", curPod.Name, oldPod.ObjectMeta, curPod.ObjectMeta)
 		ssc.enqueueStatefulSet(set)
 		return
@@ -231,10 +238,12 @@ func (ssc *StatefulSetController) updatePod(old, cur interface{}) {
 	// Otherwise, it's an orphan. If anything changed, sync matching controllers
 	// to see if anyone wants to adopt it now.
 	if labelChanged || controllerRefChanged {
+		glog.V(4).Infof("DanielDebug 7777")
 		sets := ssc.getStatefulSetsForPod(curPod)
 		if len(sets) == 0 {
 			return
 		}
+		glog.V(4).Infof("DanielDebug 8888")
 		glog.V(4).Infof("Orphan Pod %s updated, objectMeta %+v -> %+v.", curPod.Name, oldPod.ObjectMeta, curPod.ObjectMeta)
 		for _, set := range sets {
 			ssc.enqueueStatefulSet(set)
