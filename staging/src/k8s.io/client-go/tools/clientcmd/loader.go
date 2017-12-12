@@ -347,7 +347,7 @@ func (rules *ClientConfigLoadingRules) IsDefaultConfig(config *restclient.Config
 // LoadFromFile takes a filename and deserializes the contents into Config object
 func LoadFromFile(filename string) (*clientcmdapi.Config, error) {
 	kubeconfigBytes, err := ioutil.ReadFile(filename)
-	glog.V(4).Infof("Danieldebug")
+	glog.V(4).Infof("Danieldebug kubeconfigBytes: %#v", kubeconfigBytes)
 	if err != nil {
 		return nil, err
 	}
@@ -355,6 +355,7 @@ func LoadFromFile(filename string) (*clientcmdapi.Config, error) {
 	if err != nil {
 		return nil, err
 	}
+	glog.V(4).Infof("Danieldebug config: %#v", config)
 	glog.V(6).Infoln("Config loaded from file", filename)
 
 	// set LocationOfOrigin on every Cluster, User, and Context
@@ -392,6 +393,7 @@ func Load(data []byte) (*clientcmdapi.Config, error) {
 	if len(data) == 0 {
 		return config, nil
 	}
+	glog.V(4).Infof("Danieldebug data: %#v", data)
 	decoded, _, err := clientcmdlatest.Codec.Decode(data, &schema.GroupVersionKind{Version: clientcmdlatest.Version, Kind: "Config"}, config)
 	if err != nil {
 		return nil, err
