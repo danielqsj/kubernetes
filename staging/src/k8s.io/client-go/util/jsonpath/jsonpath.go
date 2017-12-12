@@ -24,6 +24,7 @@ import (
 	"strings"
 
 	"k8s.io/client-go/third_party/forked/golang/template"
+	"github.com/golang/glog"
 )
 
 type JSONPath struct {
@@ -120,6 +121,7 @@ func (j *JSONPath) FindResults(data interface{}) ([][]reflect.Value, error) {
 
 // PrintResults writes the results into writer
 func (j *JSONPath) PrintResults(wr io.Writer, results []reflect.Value) error {
+	glog.V(4).Infof("Danieldebug")
 	for i, r := range results {
 		text, err := j.evalToText(r)
 		if err != nil {

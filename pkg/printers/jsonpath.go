@@ -25,6 +25,7 @@ import (
 	"k8s.io/apimachinery/pkg/api/meta"
 	"k8s.io/apimachinery/pkg/runtime"
 	"k8s.io/client-go/util/jsonpath"
+	"github.com/golang/glog"
 )
 
 // exists returns true if it would be possible to call the index function
@@ -117,6 +118,7 @@ func (j *JSONPathPrinter) AfterPrint(w io.Writer, res string) error {
 // PrintObj formats the obj with the JSONPath Template.
 func (j *JSONPathPrinter) PrintObj(obj runtime.Object, w io.Writer) error {
 	var queryObj interface{} = obj
+	glog.V(4).Infof("Danieldebug: obj: %#v", obj)
 	if meta.IsListType(obj) {
 		data, err := json.Marshal(obj)
 		if err != nil {
