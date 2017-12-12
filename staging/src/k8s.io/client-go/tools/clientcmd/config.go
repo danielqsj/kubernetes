@@ -81,6 +81,7 @@ func (o *PathOptions) GetLoadingPrecedence() []string {
 
 func (o *PathOptions) GetStartingConfig() (*clientcmdapi.Config, error) {
 	// don't mutate the original
+	glog.V(4).Infof("Danieldebug")
 	loadingRules := *o.LoadingRules
 	loadingRules.Precedence = o.GetLoadingPrecedence()
 

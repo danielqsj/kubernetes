@@ -347,6 +347,7 @@ func (rules *ClientConfigLoadingRules) IsDefaultConfig(config *restclient.Config
 // LoadFromFile takes a filename and deserializes the contents into Config object
 func LoadFromFile(filename string) (*clientcmdapi.Config, error) {
 	kubeconfigBytes, err := ioutil.ReadFile(filename)
+	glog.V(4).Infof("Danieldebug")
 	if err != nil {
 		return nil, err
 	}

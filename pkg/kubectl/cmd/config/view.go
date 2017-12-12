@@ -33,6 +33,7 @@ import (
 	cmdutil "k8s.io/kubernetes/pkg/kubectl/cmd/util"
 	"k8s.io/kubernetes/pkg/kubectl/util/i18n"
 	"k8s.io/kubernetes/pkg/printers"
+	"github.com/golang/glog"
 )
 
 type ViewOptions struct {
@@ -104,6 +105,7 @@ func NewCmdConfigView(out, errOut io.Writer, ConfigAccess clientcmd.ConfigAccess
 
 func (o ViewOptions) Run(out io.Writer, printer printers.ResourcePrinter) error {
 	config, err := o.loadConfig()
+	glog.V(4).Infof("Danieldebug: config: %#v", config)
 	if err != nil {
 		return err
 	}
