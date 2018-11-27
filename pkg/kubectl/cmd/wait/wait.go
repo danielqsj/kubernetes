@@ -247,23 +247,25 @@ func (o *WaitOptions) RunWait() error {
 
 // IsDeleted is a condition func for waiting for something to be deleted
 func IsDeleted(info *resource.Info, o *WaitOptions) (runtime.Object, bool, error) {
+	fmt.Printf("danielqsj: 000\n")
 	endTime := time.Now().Add(o.Timeout)
 	for {
 		if len(info.Name) == 0 {
 			return info.Object, false, fmt.Errorf("resource name must be provided")
 		}
+		fmt.Printf("danielqsj: 001\n")
 		gottenObj, err := o.DynamicClient.Resource(info.Mapping.Resource).Namespace(info.Namespace).Get(info.Name, metav1.GetOptions{})
-		fmt.Printf("danielqsj: 111")
+		fmt.Printf("danielqsj: 111\n")
 		if apierrors.IsNotFound(err) {
-			fmt.Printf("danielqsj: 222")
+			fmt.Printf("danielqsj: 222\n")
 			return info.Object, true, nil
 		}
 		if err != nil {
-			fmt.Printf("danielqsj: 333")
+			fmt.Printf("danielqsj: 333\n")
 			// TODO this could do something slightly fancier if we wish
 			return info.Object, false, err
 		}
-		fmt.Printf("danielqsj: 444")
+		fmt.Printf("danielqsj: 444\n")
 		resourceLocation := ResourceLocation{
 			GroupResource: info.Mapping.Resource.GroupResource(),
 			Namespace:     gottenObj.GetNamespace(),
@@ -288,25 +290,25 @@ func IsDeleted(info *resource.Info, o *WaitOptions) (runtime.Object, bool, error
 			// we're out of time
 			return gottenObj, false, wait.ErrWaitTimeout
 		}
-		fmt.Printf("danielqsj: 555")
+		fmt.Printf("danielqsj: 555\n")
 		ctx, cancel := watchtools.ContextWithOptionalTimeout(context.Background(), o.Timeout)
 		watchEvent, err := watchtools.UntilWithoutRetry(ctx, objWatch, Wait{errOut: o.ErrOut}.IsDeleted)
 		cancel()
 		switch {
 		case err == nil:
-			fmt.Printf("danielqsj: 666")
+			fmt.Printf("danielqsj: 666\n")
 			return watchEvent.Object, true, nil
 		case err == watchtools.ErrWatchClosed:
-			fmt.Printf("danielqsj: 777")
+			fmt.Printf("danielqsj: 777\n")
 			continue
 		case err == wait.ErrWaitTimeout:
-			fmt.Printf("danielqsj: 888")
+			fmt.Printf("danielqsj: 888\n")
 			if watchEvent != nil {
 				return watchEvent.Object, false, wait.ErrWaitTimeout
 			}
 			return gottenObj, false, wait.ErrWaitTimeout
 		default:
-			fmt.Printf("danielqsj: 999")
+			fmt.Printf("danielqsj: 999\n")
 			return gottenObj, false, err
 		}
 	}
