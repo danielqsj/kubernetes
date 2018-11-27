@@ -109,9 +109,13 @@ func NewCmdWait(restClientGetter genericclioptions.RESTClientGetter, streams gen
 		Long:                  wait_long,
 		Example:               wait_example,
 		Run: func(cmd *cobra.Command, args []string) {
+			fmt.Printf("danielqsj: 0\n")
 			o, err := flags.ToOptions(args)
+			fmt.Printf("danielqsj: 1\n")
 			cmdutil.CheckErr(err)
+			fmt.Printf("danielqsj: 2\n")
 			err = o.RunWait()
+			fmt.Printf("danielqsj: 3\n")
 			cmdutil.CheckErr(err)
 		},
 		SuggestFor: []string{"list", "ps"},
@@ -133,19 +137,23 @@ func (flags *WaitFlags) AddFlags(cmd *cobra.Command) {
 
 // ToOptions converts from CLI inputs to runtime inputs
 func (flags *WaitFlags) ToOptions(args []string) (*WaitOptions, error) {
+	fmt.Printf("danielqsj: 4\n")
 	printer, err := flags.PrintFlags.ToPrinter()
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("danielqsj: 55\n")
 	builder := flags.ResourceBuilderFlags.ToBuilder(flags.RESTClientGetter, args)
 	clientConfig, err := flags.RESTClientGetter.ToRESTConfig()
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("danielqsj: 6\n")
 	dynamicClient, err := dynamic.NewForConfig(clientConfig)
 	if err != nil {
 		return nil, err
 	}
+	fmt.Printf("danielqsj: 7\n")
 	conditionFn, err := conditionFuncFor(flags.ForCondition, flags.ErrOut)
 	if err != nil {
 		return nil, err
@@ -165,7 +173,7 @@ func (flags *WaitFlags) ToOptions(args []string) (*WaitOptions, error) {
 		ConditionFn: conditionFn,
 		IOStreams:   flags.IOStreams,
 	}
-
+	fmt.Printf("danielqsj: 8\n")
 	return o, nil
 }
 
