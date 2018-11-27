@@ -142,7 +142,7 @@ func (flags *WaitFlags) ToOptions(args []string) (*WaitOptions, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Printf("danielqsj: 55\n")
+	fmt.Printf("danielqsj: 5\n")
 	builder := flags.ResourceBuilderFlags.ToBuilder(flags.RESTClientGetter, args)
 	clientConfig, err := flags.RESTClientGetter.ToRESTConfig()
 	if err != nil {
@@ -229,7 +229,9 @@ type ConditionFunc func(info *resource.Info, o *WaitOptions) (finalObject runtim
 func (o *WaitOptions) RunWait() error {
 	visitCount := 0
 	err := o.ResourceFinder.Do().Visit(func(info *resource.Info, err error) error {
+		fmt.Printf("danielqsj: 11\n")
 		if err != nil {
+			fmt.Printf("danielqsj: 22\n")
 			return err
 		}
 
