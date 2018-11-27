@@ -229,9 +229,9 @@ type ConditionFunc func(info *resource.Info, o *WaitOptions) (finalObject runtim
 func (o *WaitOptions) RunWait() error {
 	visitCount := 0
 	err := o.ResourceFinder.Do().Visit(func(info *resource.Info, err error) error {
-		fmt.Printf("danielqsj: 11\n")
+		fmt.Printf("danielqsj: 11123\n")
 		if err != nil {
-			fmt.Printf("danielqsj: 22\n")
+			fmt.Printf("danielqsj: 22123\n")
 			return err
 		}
 
