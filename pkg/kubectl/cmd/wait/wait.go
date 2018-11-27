@@ -253,13 +253,17 @@ func IsDeleted(info *resource.Info, o *WaitOptions) (runtime.Object, bool, error
 			return info.Object, false, fmt.Errorf("resource name must be provided")
 		}
 		gottenObj, err := o.DynamicClient.Resource(info.Mapping.Resource).Namespace(info.Namespace).Get(info.Name, metav1.GetOptions{})
+		fmt.Printf("danielqsj: 111")
 		if apierrors.IsNotFound(err) {
+			fmt.Printf("danielqsj: 222")
 			return info.Object, true, nil
 		}
 		if err != nil {
+			fmt.Printf("danielqsj: 333")
 			// TODO this could do something slightly fancier if we wish
 			return info.Object, false, err
 		}
+		fmt.Printf("danielqsj: 444")
 		resourceLocation := ResourceLocation{
 			GroupResource: info.Mapping.Resource.GroupResource(),
 			Namespace:     gottenObj.GetNamespace(),
@@ -284,21 +288,25 @@ func IsDeleted(info *resource.Info, o *WaitOptions) (runtime.Object, bool, error
 			// we're out of time
 			return gottenObj, false, wait.ErrWaitTimeout
 		}
-
+		fmt.Printf("danielqsj: 555")
 		ctx, cancel := watchtools.ContextWithOptionalTimeout(context.Background(), o.Timeout)
 		watchEvent, err := watchtools.UntilWithoutRetry(ctx, objWatch, Wait{errOut: o.ErrOut}.IsDeleted)
 		cancel()
 		switch {
 		case err == nil:
+			fmt.Printf("danielqsj: 666")
 			return watchEvent.Object, true, nil
 		case err == watchtools.ErrWatchClosed:
+			fmt.Printf("danielqsj: 777")
 			continue
 		case err == wait.ErrWaitTimeout:
+			fmt.Printf("danielqsj: 888")
 			if watchEvent != nil {
 				return watchEvent.Object, false, wait.ErrWaitTimeout
 			}
 			return gottenObj, false, wait.ErrWaitTimeout
 		default:
+			fmt.Printf("danielqsj: 999")
 			return gottenObj, false, err
 		}
 	}
@@ -313,14 +321,17 @@ type Wait struct {
 func (w Wait) IsDeleted(event watch.Event) (bool, error) {
 	switch event.Type {
 	case watch.Error:
+		fmt.Printf("danielqsj: 888")
 		// keep waiting in the event we see an error - we expect the watch to be closed by
 		// the server if the error is unrecoverable.
 		err := apierrors.FromObject(event.Object)
 		fmt.Fprintf(w.errOut, "error: An error occurred while waiting for the object to be deleted: %v", err)
 		return false, nil
 	case watch.Deleted:
+		fmt.Printf("danielqsj: 999")
 		return true, nil
 	default:
+		fmt.Printf("danielqsj: 1111")
 		return false, nil
 	}
 }
