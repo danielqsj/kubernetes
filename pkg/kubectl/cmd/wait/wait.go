@@ -247,11 +247,14 @@ func (o *WaitOptions) RunWait() error {
 		return err
 	})
 	if err != nil {
+		fmt.Printf("danielqsj: 22\n")
 		return err
 	}
 	if visitCount == 0 {
+		fmt.Printf("danielqsj: 23\n")
 		return errNoMatchingResources
 	}
+	fmt.Printf("danielqsj: 24\n")
 	return err
 }
 
