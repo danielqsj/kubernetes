@@ -21,6 +21,7 @@ import (
 	"errors"
 	"fmt"
 	"io"
+	"reflect"
 	"strings"
 	"time"
 
@@ -247,6 +248,10 @@ func (o *WaitOptions) RunWait() error {
 		return err
 	})
 	if err != nil {
+		if apierrors.IsNotFound(err) && reflect.ValueOf(o.ConditionFn).Pointer() == reflect.ValueOf(IsDeleted).Pointer() {
+			o.Printer.PrintObj(nil, o.Out)
+			return nil
+		}
 		fmt.Printf("danielqsj: 22\n")
 		return err
 	}
